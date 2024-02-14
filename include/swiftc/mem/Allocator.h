@@ -41,7 +41,7 @@ void *resize_or_alloc(Allocator self, void *buf, usize len, usize new_len) {
     if (allocated == null) return null;
 
     memcpy(allocated, buf, new_len);
-    // self.free(buf);
+    free(self, buf, len);
     return allocated;
 }
 /// Resizes the slice in place or allocates a new one if failed.
