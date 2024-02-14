@@ -1,5 +1,3 @@
 #include "swiftc/swiftc.h"
 
-int main() {
-    
-}
+int main() {}

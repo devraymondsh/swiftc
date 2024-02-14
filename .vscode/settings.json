@@ -1,0 +1,18 @@
+{
+    "editor.defaultFormatter": "xaver.clang-format",
+    "C_Cpp.default.cStandard": "c23",
+    "files.associations": {
+        "*.h": "c",
+        "any": "c",
+        "array": "c",
+        "charconv": "c",
+        "compare": "c",
+        "functional": "c",
+        "ratio": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "variant": "c"
+    },
+    "C_Cpp.default.compilerPath": "/usr/bin/clang"
+}
