@@ -1,2 +1,2 @@
-# swiftc
-This is a header-only std library for C that's focused on performance and minimalism. It currently only supports x86_64 and aarch64 Linux. This project is open for contribution and extending this project to other operating systems. However, 32-bit architectures will never be supported. This project is inspired by the Zig programming language and the [swift_lib](https://github.com/devraymondsh/swift_lib) project.
+# swiftC
+This is a header-only std library for C that's focused on performance and minimalism. It currently only supports x86_64 and aarch64 Linux. This project is open for contribution and extending this project to other operating systems. However, 32-bit architectures will never be supported. This project is inspired by the Zig programming language and the [SwiftZig](https://github.com/devraymondsh/swiftzig) project.
