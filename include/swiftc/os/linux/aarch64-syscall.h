@@ -371,20 +371,20 @@ typedef enum SyscallType
 usize syscall0(SyscallType type) {
     register long _x0 asm("x0");
     register long _x8 asm("x8") = type;
-    asm volatile("svc %1" : "=r"(_x0) : "I"(type) : "memory");
+    asm volatile("svc #0" : "=r"(_x0) : "r"(_x8) : "memory");
     return _x0;
 }
 usize syscall1(SyscallType type, usize a1) {
     register long _x0 asm("x0") = a1;
     register long _x8 asm("x8") = type;
-    asm volatile("svc %1" : "=r"(_x0) : "I"(type) : "memory");
+    asm volatile("svc #0" : "=r"(_x0) : "r"(_x8), "r"(_x0) : "memory");
     return _x0;
 }
 usize syscall2(SyscallType type, usize a1, usize a2) {
     register long _x0 asm("x0") = a1;
     register long _x1 asm("x1") = a2;
     register long _x8 asm("x8") = type;
-    asm volatile("svc %1" : "=r"(_x0) : "I"(type) : "memory");
+    asm volatile("svc #0" : "=r"(_x0) : "r"(_x8), "r"(_x0), "r"(_x1) : "memory");
     return _x0;
 }
 usize syscall3(SyscallType type, usize a1, usize a2, usize a3) {
@@ -392,7 +392,7 @@ usize syscall3(SyscallType type, usize a1, usize a2, usize a3) {
     register long _x1 asm("x1") = a2;
     register long _x2 asm("x2") = a3;
     register long _x8 asm("x8") = type;
-    asm volatile("svc %1" : "=r"(_x0) : "I"(type) : "memory");
+    asm volatile("svc #0" : "=r"(_x0) : "r"(_x8), "r"(_x0), "r"(_x1), "r"(_x2) : "memory");
     return _x0;
 }
 usize syscall4(SyscallType type, usize a1, usize a2, usize a3, usize a4) {
@@ -401,7 +401,10 @@ usize syscall4(SyscallType type, usize a1, usize a2, usize a3, usize a4) {
     register long _x2 asm("x2") = a3;
     register long _x3 asm("x3") = a4;
     register long _x8 asm("x8") = type;
-    asm volatile("svc %1" : "=r"(_x0) : "I"(type) : "memory");
+    asm volatile("svc #0"
+                 : "=r"(_x0)
+                 : "r"(_x8), "r"(_x0), "r"(_x1), "r"(_x2), "r"(_x3)
+                 : "memory");
     return _x0;
 }
 usize syscall5(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a5) {
@@ -411,7 +414,10 @@ usize syscall5(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a
     register long _x3 asm("x3") = a4;
     register long _x4 asm("x4") = a5;
     register long _x8 asm("x8") = type;
-    asm volatile("svc %1" : "=r"(_x0) : "I"(type) : "memory");
+    asm volatile("svc #0"
+                 : "=r"(_x0)
+                 : "r"(_x8), "r"(_x0), "r"(_x1), "r"(_x2), "r"(_x3), "r"(_x4)
+                 : "memory");
     return _x0;
 }
 usize syscall6(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a5, usize a6) {
@@ -422,6 +428,9 @@ usize syscall6(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a
     register long _x4 asm("x4") = a5;
     register long _x5 asm("x5") = a6;
     register long _x8 asm("x8") = type;
-    asm volatile("svc %1" : "=r"(_x0) : "I"(type) : "memory");
+    asm volatile("svc #0"
+                 : "=r"(_x0)
+                 : "r"(_x8), "r"(_x0), "r"(_x1), "r"(_x2), "r"(_x3), "r"(_x4), "r"(_x5)
+                 : "memory");
     return _x0;
 }
