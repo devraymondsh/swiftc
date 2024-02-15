@@ -375,35 +375,35 @@ typedef enum SyscallType
 } SyscallType;
 
 /// O:
-#define O_CREAT        0100;
+#define O_CREAT        0100
 /// O:
-#define O_EXCL         0200;
+#define O_EXCL         0200
 /// O:
-#define O_NOCTTY       0400;
+#define O_NOCTTY       0400
 /// O:
-#define O_TRUNC        01000;
+#define O_TRUNC        01000
 /// O:
-#define O_APPEND       02000;
+#define O_APPEND       02000
 /// O:
-#define O_NONBLOCK     04000;
+#define O_NONBLOCK     04000
 /// O:
-#define O_DSYNC        010000;
+#define O_DSYNC        010000
 /// O:
-#define O_SYNC         04010000;
+#define O_SYNC         04010000
 /// O:
-#define O_RSYNC        04010000;
+#define O_RSYNC        04010000
 /// O:
-#define O_DIRECTORY    0200000;
+#define O_DIRECTORY    0200000
 /// O:
-#define O_NOFOLLOW     0400000;
+#define O_NOFOLLOW     0400000
 /// O:
-#define O_CLOEXEC      02000000;
+#define O_CLOEXEC      02000000
 /// O:
-#define O_ASYNC        020000;
+#define O_ASYNC        020000
 /// O:
-#define O_DIRECT       040000;
+#define O_DIRECT       040000
 /// O:
-#define O_LARGEFILE    0;
+#define O_LARGEFILE    0
 /// O:
 #define O_NOATIME      01000000;
 /// O:
@@ -411,86 +411,90 @@ typedef enum SyscallType
 /// O:
 #define O_TMPFILE      020200000;
 /// O:
-#define O_NDELAY       = NONBLOCK;
+#define O_NDELAY       O_NONBLOCK
 
 /// MAP: only give out 32bit addresses
-#define MAP_32BIT      0x40;
+#define MAP_32BIT      0x40
 /// MAP: stack-like segment
-#define MAP_GROWSDOWN  0x0100;
+#define MAP_GROWSDOWN  0x0100
 /// MAP: ETXTBSY
-#define MAP_DENYWRITE  0x0800;
+#define MAP_DENYWRITE  0x0800
 /// MAP: mark it as an executable
-#define MAP_EXECUTABLE 0x1000;
+#define MAP_EXECUTABLE 0x1000
 /// MAP: pages are locked
-#define MAP_LOCKED     0x2000;
+#define MAP_LOCKED     0x2000
 /// MAP: don't check for reservations
-#define MAP_NORESERVE  0x4000;
+#define MAP_NORESERVE  0x4000
 
-usize syscall0(SyscallType type) {
-    register usize _rax asm("rax") = type;
-    asm volatile("syscall" : "=r"(_rax) : "r"(_rax) : "rcx", "r11", "memory");
+FNDECL_PREFIX usize syscall0(SyscallType type) {
+    register usize _rax __asm__("rax") = type;
+    __asm__ __volatile__("syscall" : "=r"(_rax) : "r"(_rax) : "rcx", "r11", "memory");
     return _rax;
 }
-usize syscall1(SyscallType type, usize a1) {
-    register usize _rax asm("rax") = type;
-    register usize _rdi asm("rdi") = a1;
-    asm volatile("syscall" : "=r"(_rax) : "r"(_rax), "r"(_rdi) : "rcx", "r11", "memory");
+FNDECL_PREFIX usize syscall1(SyscallType type, usize a1) {
+    register usize _rax __asm__("rax") = type;
+    register usize _rdi __asm__("rdi") = a1;
+    __asm__ __volatile__("syscall" : "=r"(_rax) : "r"(_rax), "r"(_rdi) : "rcx", "r11", "memory");
     return _rax;
 }
-usize syscall2(SyscallType type, usize a1, usize a2) {
-    register usize _rax asm("rax") = type;
-    register usize _rdi asm("rdi") = a1;
-    register usize _rsi asm("rsi") = a2;
-    asm volatile("syscall" : "=r"(_rax) : "r"(_rax), "r"(_rdi), "r"(_rsi) : "rcx", "r11", "memory");
+FNDECL_PREFIX usize syscall2(SyscallType type, usize a1, usize a2) {
+    register usize _rax __asm__("rax") = type;
+    register usize _rdi __asm__("rdi") = a1;
+    register usize _rsi __asm__("rsi") = a2;
+    __asm__ __volatile__("syscall"
+                         : "=r"(_rax)
+                         : "r"(_rax), "r"(_rdi), "r"(_rsi)
+                         : "rcx", "r11", "memory");
     return _rax;
 }
-usize syscall3(SyscallType type, usize a1, usize a2, usize a3) {
-    register usize _rax asm("rax") = type;
-    register usize _rdi asm("rdi") = a1;
-    register usize _rsi asm("rsi") = a2;
-    register usize _rdx asm("rdx") = a3;
-    asm volatile("syscall"
-                 : "=r"(_rax)
-                 : "r"(_rax), "r"(_rdi), "r"(_rsi), "r"(_rdx)
-                 : "rcx", "r11", "memory");
+FNDECL_PREFIX usize syscall3(SyscallType type, usize a1, usize a2, usize a3) {
+    register usize _rax __asm__("rax") = type;
+    register usize _rdi __asm__("rdi") = a1;
+    register usize _rsi __asm__("rsi") = a2;
+    register usize _rdx __asm__("rdx") = a3;
+    __asm__ __volatile__("syscall"
+                         : "=r"(_rax)
+                         : "r"(_rax), "r"(_rdi), "r"(_rsi), "r"(_rdx)
+                         : "rcx", "r11", "memory");
     return _rax;
 }
-usize syscall4(SyscallType type, usize a1, usize a2, usize a3, usize a4) {
-    register usize _rax asm("rax") = type;
-    register usize _rdi asm("rdi") = a1;
-    register usize _rsi asm("rsi") = a2;
-    register usize _rdx asm("rdx") = a3;
-    register usize _r10 asm("r10") = a4;
-    asm volatile("syscall"
-                 : "=r"(_rax)
-                 : "r"(_rax), "r"(_rdi), "r"(_rsi), "r"(_rdx), "r"(_r10)
-                 : "rcx", "r11", "memory");
+FNDECL_PREFIX usize syscall4(SyscallType type, usize a1, usize a2, usize a3, usize a4) {
+    register usize _rax __asm__("rax") = type;
+    register usize _rdi __asm__("rdi") = a1;
+    register usize _rsi __asm__("rsi") = a2;
+    register usize _rdx __asm__("rdx") = a3;
+    register usize _r10 __asm__("r10") = a4;
+    __asm__ __volatile__("syscall"
+                         : "=r"(_rax)
+                         : "r"(_rax), "r"(_rdi), "r"(_rsi), "r"(_rdx), "r"(_r10)
+                         : "rcx", "r11", "memory");
     return _rax;
 }
-usize syscall5(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a5) {
-    register usize _rax asm("rax") = type;
-    register usize _rdi asm("rdi") = a1;
-    register usize _rsi asm("rsi") = a2;
-    register usize _rdx asm("rdx") = a3;
-    register usize _r10 asm("r10") = a4;
-    register usize _r8 asm("r8")   = a5;
-    asm volatile("syscall"
-                 : "=r"(_rax)
-                 : "r"(_rax), "r"(_rdi), "r"(_rsi), "r"(_rdx), "r"(_r10), "r"(_r8)
-                 : "rcx", "r11", "memory");
+FNDECL_PREFIX usize syscall5(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a5) {
+    register usize _rax __asm__("rax") = type;
+    register usize _rdi __asm__("rdi") = a1;
+    register usize _rsi __asm__("rsi") = a2;
+    register usize _rdx __asm__("rdx") = a3;
+    register usize _r10 __asm__("r10") = a4;
+    register usize _r8 __asm__("r8")   = a5;
+    __asm__ __volatile__("syscall"
+                         : "=r"(_rax)
+                         : "r"(_rax), "r"(_rdi), "r"(_rsi), "r"(_rdx), "r"(_r10), "r"(_r8)
+                         : "rcx", "r11", "memory");
     return _rax;
 }
-usize syscall6(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a5, usize a6) {
-    register usize _rax asm("rax") = type;
-    register usize _rdi asm("rdi") = a1;
-    register usize _rsi asm("rsi") = a2;
-    register usize _rdx asm("rdx") = a3;
-    register usize _r10 asm("r10") = a4;
-    register usize _r8 asm("r8")   = a5;
-    register usize _r9 asm("r9")   = a6;
-    asm volatile("syscall"
-                 : "=r"(_rax)
-                 : "r"(_rax), "r"(_rdi), "r"(_rsi), "r"(_rdx), "r"(_r10), "r"(_r8), "r"(_r9)
-                 : "rcx", "r11", "memory");
+FNDECL_PREFIX usize syscall6(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a5,
+                             usize a6) {
+    register usize _rax __asm__("rax") = type;
+    register usize _rdi __asm__("rdi") = a1;
+    register usize _rsi __asm__("rsi") = a2;
+    register usize _rdx __asm__("rdx") = a3;
+    register usize _r10 __asm__("r10") = a4;
+    register usize _r8 __asm__("r8")   = a5;
+    register usize _r9 __asm__("r9")   = a6;
+    __asm__ __volatile__("syscall"
+                         : "=r"(_rax)
+                         : "r"(_rax), "r"(_rdi), "r"(_rsi), "r"(_rdx), "r"(_r10), "r"(_r8), "r"(_r9)
+                         : "rcx", "r11", "memory");
     return _rax;
 }

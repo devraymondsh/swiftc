@@ -319,75 +319,75 @@ typedef enum SyscallType
 } SyscallType;
 
 /// O:
-#define O_CREAT        0100;
+#define O_CREAT        0100
 /// O:
-#define O_EXCL         0200;
+#define O_EXCL         0200
 /// O:
-#define O_NOCTTY       0400;
+#define O_NOCTTY       0400
 /// O:
-#define O_TRUNC        01000;
+#define O_TRUNC        01000
 /// O:
-#define O_APPEND       02000;
+#define O_APPEND       02000
 /// O:
-#define O_NONBLOCK     04000;
+#define O_NONBLOCK     04000
 /// O:
-#define O_DSYNC        010000;
+#define O_DSYNC        010000
 /// O:
-#define O_SYNC         04010000;
+#define O_SYNC         04010000
 /// O:
-#define O_RSYNC        04010000;
+#define O_RSYNC        04010000
 /// O:
-#define O_DIRECTORY    040000;
+#define O_DIRECTORY    040000
 /// O:
-#define O_NOFOLLOW     0100000;
+#define O_NOFOLLOW     0100000
 /// O:
-#define O_CLOEXEC      02000000;
+#define O_CLOEXEC      02000000
 /// O:
-#define O_ASYNC        020000;
+#define O_ASYNC        020000
 /// O:
-#define O_DIRECT       0200000;
+#define O_DIRECT       0200000
 /// O:
-#define O_LARGEFILE    0400000;
+#define O_LARGEFILE    0400000
 /// O:
-#define O_NOATIME      01000000;
+#define O_NOATIME      01000000
 /// O:
-#define O_PATH         010000000;
+#define O_PATH         010000000
 /// O:
-#define O_TMPFILE      020040000;
+#define O_TMPFILE      020040000
 /// O:
-#define O_NDELAY       = NONBLOCK;
+#define O_NDELAY       O_NONBLOCK;
 
 /// MAP: stack-like segment
-#define MAP_GROWSDOWN  0x0100;
+#define MAP_GROWSDOWN  0x0100
 /// MAP: ETXTBSY
-#define MAP_DENYWRITE  0x0800;
+#define MAP_DENYWRITE  0x0800
 /// MAP: mark it as an executable
-#define MAP_EXECUTABLE 0x1000;
+#define MAP_EXECUTABLE 0x1000
 /// MAP: pages are locked
-#define MAP_LOCKED     0x2000;
+#define MAP_LOCKED     0x2000
 /// MAP: don't check for reservations
-#define MAP_NORESERVE  0x4000;
+#define MAP_NORESERVE  0x4000
 
-usize syscall0(SyscallType type) {
+FNDECL_PREFIX usize syscall0(SyscallType type) {
     register long _x0 asm("x0");
     register long _x8 asm("x8") = type;
     asm volatile("svc #0" : "=r"(_x0) : "r"(_x8) : "memory");
     return _x0;
 }
-usize syscall1(SyscallType type, usize a1) {
+FNDECL_PREFIX usize syscall1(SyscallType type, usize a1) {
     register long _x0 asm("x0") = a1;
     register long _x8 asm("x8") = type;
     asm volatile("svc #0" : "=r"(_x0) : "r"(_x8), "r"(_x0) : "memory");
     return _x0;
 }
-usize syscall2(SyscallType type, usize a1, usize a2) {
+FNDECL_PREFIX usize syscall2(SyscallType type, usize a1, usize a2) {
     register long _x0 asm("x0") = a1;
     register long _x1 asm("x1") = a2;
     register long _x8 asm("x8") = type;
     asm volatile("svc #0" : "=r"(_x0) : "r"(_x8), "r"(_x0), "r"(_x1) : "memory");
     return _x0;
 }
-usize syscall3(SyscallType type, usize a1, usize a2, usize a3) {
+FNDECL_PREFIX usize syscall3(SyscallType type, usize a1, usize a2, usize a3) {
     register long _x0 asm("x0") = a1;
     register long _x1 asm("x1") = a2;
     register long _x2 asm("x2") = a3;
@@ -395,7 +395,7 @@ usize syscall3(SyscallType type, usize a1, usize a2, usize a3) {
     asm volatile("svc #0" : "=r"(_x0) : "r"(_x8), "r"(_x0), "r"(_x1), "r"(_x2) : "memory");
     return _x0;
 }
-usize syscall4(SyscallType type, usize a1, usize a2, usize a3, usize a4) {
+FNDECL_PREFIX usize syscall4(SyscallType type, usize a1, usize a2, usize a3, usize a4) {
     register long _x0 asm("x0") = a1;
     register long _x1 asm("x1") = a2;
     register long _x2 asm("x2") = a3;
@@ -407,7 +407,7 @@ usize syscall4(SyscallType type, usize a1, usize a2, usize a3, usize a4) {
                  : "memory");
     return _x0;
 }
-usize syscall5(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a5) {
+FNDECL_PREFIX usize syscall5(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a5) {
     register long _x0 asm("x0") = a1;
     register long _x1 asm("x1") = a2;
     register long _x2 asm("x2") = a3;
@@ -420,7 +420,8 @@ usize syscall5(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a
                  : "memory");
     return _x0;
 }
-usize syscall6(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a5, usize a6) {
+FNDECL_PREFIX usize syscall6(SyscallType type, usize a1, usize a2, usize a3, usize a4, usize a5,
+                             usize a6) {
     register long _x0 asm("x0") = a1;
     register long _x1 asm("x1") = a2;
     register long _x2 asm("x2") = a3;

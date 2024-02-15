@@ -1,6 +1,9 @@
+#include "clang-ignore.h"
 #include "swiftc/swiftc.h"
 
-int main() {
-    SYSCALL(SYS_write, 3, 0, (usize) "hello\n", 7);
+__attribute__((noreturn)) extern void _start(void) {
+    SYSCALL(SYS_write, 3, 0, (usize) "Successful write syscall!\n", 27);
     SYSCALL(SYS_exit, 1, 0);
+
+    __builtin_unreachable();
 }

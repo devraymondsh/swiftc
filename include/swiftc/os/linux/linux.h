@@ -2,7 +2,7 @@
 
 #include "../../numbers.h"
 
-#if __aarch64__ || __ARM_ARCH_ISA_A64
+#if defined(__aarch64__) || defined(__ARM_ARCH_ISA_A64)
     #include "aarch64-syscall.h"
 #else
     #include "x86_64-syscall.h"
@@ -321,37 +321,55 @@ typedef enum SyscallError
     SE_NSRCNAMELOOP          = 177,
 } SyscallError;
 
-/// O:
-/// read only
-#define O_RDONLY       00;
-/// O:
-/// write only
-#define O_WRONLY       01;
-/// O:
-/// read and write
-#define O_RDWR         02;
+/// O: read only
+#define O_RDONLY            00
+/// O: write only
+#define O_WRONLY            01
+/// O: read and write
+#define O_RDWR              02
 
-/// PROT:
-/// page can not be accessed
-#define PROT_NONE      0x0;
-/// PROT:
-/// page can be read
-#define PROT_READ      0x1;
-/// PROT:
-/// page can be written
-#define PROT_WRITE     0x2;
-/// PROT:
-/// page can be executed
-#define PROT_EXEC      0x4;
-/// PROT:
-/// page may be used for atomic ops
-#define PROT_SEM       0x8;
-/// PROT:
-/// mprotect flag: extend change to start of growsdown vma
-#define PROT_GROWSDOWN 0x01000000;
-/// PROT:
-/// mprotect flag: extend change to end of growsup vma
-#define PROT_GROWSUP   0x02000000;
+/// PROT: page can not be accessed
+#define PROT_NONE           0x0
+/// PROT: page can be read
+#define PROT_READ           0x1
+/// PROT: page can be written
+#define PROT_WRITE          0x2
+/// PROT: page can be executed
+#define PROT_EXEC           0x4
+/// PROT: page may be used for atomic ops
+#define PROT_SEM            0x8
+/// PROT: mprotect flag: extend change to start of growsdown vma
+#define PROT_GROWSDOWN      0x01000000
+/// PROT: mprotect flag: extend change to end of growsup vma
+#define PROT_GROWSUP        0x02000000
+
+/// Share changes
+#define MAP_SHARED          0x01
+/// Changes are private
+#define MAP_PRIVATE         0x02
+/// share + validate extension flags
+#define MAP_SHARED_VALIDATE 0x03
+/// Mask for type of mapping
+#define MAP_TYPE            0x0f
+/// Interpret addr exactly
+#define MAP_FIXED           0x10
+/// don't use a file
+#define MAP_ANONYMOUS       0x20
+// MAP_ 0x0100 - 0x4000 flags are per architecture
+/// populate (prefault) pagetables
+#define MAP_POPULATE        0x8000
+/// do not block on IO
+#define MAP_NONBLOCK        0x10000
+/// give out an address that is best suited for process/thread stacks
+#define MAP_STACK           0x20000
+/// create a huge page mapping
+#define MAP_HUGETLB         0x40000
+/// perform synchronous page faults for the mapping
+#define MAP_SYNC            0x80000
+/// MAP_FIXED which doesn't unmap underlying mapping
+#define MAP_FIXED_NOREPLACE 0x100000
+/// For anonymous mmap, memory could be uninitialized
+#define MAP_UNINITIALIZED   0x4000000
 
 struct stat {
     unsigned short st_dev;
@@ -368,10 +386,9 @@ struct stat {
 };
 
 /// Get the errno from a syscall return value. Zero means no error.
-SyscallError linux_get_syserrno(usize r) {
-    i64 signed_r  = (i64)r;
-    int error_int = (signed_r > -4096 && signed_r < 0) ? -signed_r : 0;
-    return (SyscallError)error_int;
+FNDECL_PREFIX SyscallError linux_get_syserrno(usize r) {
+    i64 signed_r = (i64)r;
+    return (SyscallError)((signed_r > -4096 && signed_r < 0) ? -signed_r : 0);
 }
 
-#define SYSCALL(type, n, args...) syscall##n(type, args)
+#define SYSCALL(type, n, ...) syscall##n(type, __VA_ARGS__)

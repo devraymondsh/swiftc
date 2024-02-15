@@ -1,12 +1,12 @@
 #pragma once
 
 #ifdef __MINGW32__
-    #define __WORDSIZE 32
+    #define WRDSIZE 32
 #else
     #if defined __x86_64__ && !defined __ILP32__
-        #define __WORDSIZE 64
+        #define WRDSIZE 64
     #else
-        #define __WORDSIZE 32
+        #define WRDSIZE 32
     #endif
 #endif
 
@@ -23,7 +23,7 @@ typedef signed int i32;
 _Static_assert(sizeof(unsigned int) == 4, "`unsigned int` should be 4 bytes.");
 typedef unsigned int u32;
 
-#if __WORDSIZE == 64
+#if WRDSIZE == 64
 _Static_assert(sizeof(signed long int) == 8, "`signed long int` should be 8 bytes.");
 typedef signed long int i64;
 _Static_assert(sizeof(unsigned long int) == 8, "`unsigned long int` should be 8 bytes.");
